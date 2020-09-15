@@ -58,9 +58,13 @@ app.delete('/api/persons/:id', (request, response) => {
 app.post('/api/persons', (request, response) => {
   const body = request.body
   console.log(request.headers)
-  if (!body.name) {
+  if (!body.name || !body.number) {
     return response.status(400).json({
       error: 'content missing'
+    })
+  } else if (persons.findIndex((person => person.name === body.name)) != -1) {
+    return response.status(418).json({
+      error: 'phonebook already contains this name'
     })
   }
 
@@ -69,9 +73,7 @@ app.post('/api/persons', (request, response) => {
     number: body.number,
     id: Math.floor(Math.random() * 10000),
   }
-
   persons = persons.concat(person)
-
   response.json(person)
 })
 
