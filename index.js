@@ -2,7 +2,10 @@ const express = require('express')
 const app = express()
 const morgan = require('morgan')
 
+// express for routing to static FE and to bundle JS responses
 app.use(express.json())
+app.use(express.static('build'))
+// morgan to log requests
 app.use( morgan(function (tokens, req, res) {
   let output = [
     tokens.method(req, res),
@@ -16,7 +19,6 @@ app.use( morgan(function (tokens, req, res) {
   }
   return output.join(' ')
 }))
-app.use(express.static('build'))
 
 let persons =
   [
